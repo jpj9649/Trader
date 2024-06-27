@@ -14,7 +14,7 @@ from finances import *
 #####################################
 
 # Various tickers to pull data for    
-ticker_list = ["AAPL", "NVDA", "GOOG", "META", "MSFT"]
+ticker_list = ["AAPL", "NVDA", "GOOG", "META", "MSFT", "NXPI", "SLAB", "TSM", "INTC", "TXN", "FL", "DIS", "GOOS"]
 
 #profit results in dict with ticker as key and profit as value
 results = {}
@@ -22,9 +22,9 @@ results = {}
 # One at a time loop through each ticker from the above ticker list. Add any, remove any as needed
 for ticker in ticker_list:
 
-    print('Ticker = {0}'.format(ticker))
+    # print('Ticker = {0}'.format(ticker))
 
-    dataF = yf.download(tickers = [ticker], start="2024-05-14", end="2024-06-16", interval='15m', prepost = 'TRUE') #YYYY=MM=DD
+    dataF = yf.download(tickers = [ticker], start="2024-05-14", end="2024-06-24", interval='15m', prepost = 'TRUE') #YYYY=MM=DD
     dataF.iloc[:,:]
     
     #init / define several variable in one line
