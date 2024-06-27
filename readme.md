@@ -40,12 +40,11 @@ Buy-sell signal strategies
  - [ ] Hybrid Moving Average (hMA)
  - [ ] Stochastics
  - [ ] Stochastics
- - [x] dfg 
 
 ### History
-June 25^th^, 2024 - Conception of Idea
+June 25th, 2024 - Conception of Idea
 
-June 26^th^, 2024 - Initial commit
+June 26th, 2024 - Initial commit
 
 ### Authors
 -------
