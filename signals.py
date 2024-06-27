@@ -1,5 +1,6 @@
 # Signals
 import pandas as pd
+import pandas_ta as ta
 
 #####################################
 ##
@@ -30,9 +31,33 @@ def signal_generator(df):
     
 
 #####################################
-##             2. SMA
+##             2. MA
 #####################################
+# can be exponential, simple, or RSI moving average depending on the type str, t, that is passed in
+# l is the lenth of the moving avg
+def ma(d: dict, l: int, t: str):
+
+    string = t+'-MA_'+str(l)
+    if t == 'S':
+        d[string] = ta.sma(d.Close,length=l)
+    elif t == 'E':
+        d[string] = ta.ema(d.Close,length=l)
+    elif t == 'RSI':
+        d[string] = ta.rsi(d.Close,length=l)
+    else:
+        print("Invalid moving average")
+        quit()
+
+    return d
 
 #####################################
-##             2. EMA
+##             3. Bollinger bands
 #####################################
+def bb(d: dict, l: int, sigma: float):
+
+    string = 'BB_'+str(l)+'_'+str(sigma)
+    d[string] = ta.bbands(d.Close, length = l, std = sigma)
+
+    return d
+
+    

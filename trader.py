@@ -24,7 +24,10 @@ for ticker in ticker_list:
 
     # print('Ticker = {0}'.format(ticker))
 
-    dataF = yf.download(tickers = [ticker], start="2024-05-14", end="2024-06-24", interval='15m', prepost = 'TRUE') #YYYY=MM=DD
+    # dataF = yf.download(tickers = [ticker], start="2024-05-14", end="2024-06-24", interval='15m', prepost = 'TRUE') #YYYY=MM=DD
+    # dataF = yf.download(tickers = [ticker],period='3mo') #YYYY=MM=DD
+    # dataF = yf.download(tickers = [ticker],period='7d') #YYYY=MM=DD
+    dataF = yf.download(tickers = [ticker], start="2023-01-14", end="2024-05-21", interval='60m')
     dataF.iloc[:,:]
     
     #init / define several variable in one line
