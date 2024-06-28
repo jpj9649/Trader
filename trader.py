@@ -3,9 +3,12 @@ import pandas as pd
 
 # Signal generators moved to signals.py
 from signals import * 
+from plot import * 
 
 # profits moved to finances.py
 from finances import *
+
+import pandas_ta as ta
 
 #####################################
 ##
@@ -27,16 +30,45 @@ for ticker in ticker_list:
     # dataF = yf.download(tickers = [ticker], start="2024-05-14", end="2024-06-24", interval='15m', prepost = 'TRUE') #YYYY=MM=DD
     # dataF = yf.download(tickers = [ticker],period='3mo') #YYYY=MM=DD
     # dataF = yf.download(tickers = [ticker],period='7d') #YYYY=MM=DD
-    dataF = yf.download(tickers = [ticker], start="2023-01-14", end="2024-05-21", interval='60m')
+    dataF = yf.download(tickers = [ticker], start="2024-05-01", end="2024-06-27", interval='5m')
     dataF.iloc[:,:]
     
     #init / define several variable in one line
     profit, share_cost, shares, signal = 0, 0, 0, [0]
 
+    df = dataF
+
+    # remove days without movement ie weekends
+    df = df[df.High!=df.Low]
+    df.reset_index(inplace=True, drop=False)
+
+    # add bollinger bands to data table
+    bb_len, bb_std = 25, 2.0
+    df.ta.bbands(append = True, length = bb_len, std = bb_std)
+    bb_len_std = '_'+str(bb_len)+'_'+str(bb_std)
+    df[('bb_width'+bb_len_std)] = (df[('BBU'+bb_len_std)] - df[('BBL'+bb_len_std)]) / df[('BBM'+bb_len_std)]
+    # df['bb_width'] = (df['BBU_10_1.5'] - df['BBL_10_1.5']) / df['BBM_10_1.5']
+
+    # Add RSI to data table
+    rsi_len = 14
+    df.ta.rsi(append = True, length = rsi_len)
+
+    # Add ATR to data table
+    atr_len = 14
+    df.ta.atr(append = True, low=df.Low, close = df.Close, high = df.High, length = atr_len)
+
+    # plot if wanted
+    showIt(df, str(bb_len_std), str(rsi_len))
+
     # signal.append(0)
-    for i in range(1,len(dataF)):
+    for i in range(1,len(dataF)): # cycle through each row of data (timestamps)
         df = dataF[i-1:i+1]
+
+        # naive signal gen
         signal.append(signal_generator(df))
+
+
+
         if signal[-1] != 0:
             shares, profit, share_cost = gains(profit, signal[-1], shares, df.Close.iloc[-1], share_cost)
 
